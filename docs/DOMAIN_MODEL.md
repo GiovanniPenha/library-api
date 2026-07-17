@@ -37,7 +37,7 @@ Representa um livro cadastrado na biblioteca.
 ### Regras
 
 - O título é obrigatório.
-- O ISBN é obrigatório e único.
+- O ISBN é obrigatório e deve ser único.
 - O gênero é obrigatório.
 - O livro deve possuir um autor.
 - A quantidade total deve ser maior que zero.
@@ -48,7 +48,7 @@ Representa um livro cadastrado na biblioteca.
 
 ## LibraryUser
 
-Representa uma pessoa cadastrada para utilizar os serviços da biblioteca.
+Representa um usuário cadastrado para utilizar os serviços da biblioteca.
 
 ### Atributos
 
@@ -61,14 +61,14 @@ Representa uma pessoa cadastrada para utilizar os serviços da biblioteca.
 
 - O nome é obrigatório.
 - O código de usuário é obrigatório e único.
-- O e-mail é obrigatório e único.
+- O e-mail é obrigatório e deve ser único.
 - Um usuário pode possuir vários empréstimos.
 
 ---
 
 ## Loan
 
-Representa uma retirada específica de um livro por um usuário.
+Representa um empréstimo de um livro realizado por um usuário.
 
 ### Atributos
 
@@ -82,8 +82,8 @@ Representa uma retirada específica de um livro por um usuário.
 ### Regras
 
 - Cada nova retirada gera um novo empréstimo.
-- O usuário deve existir.
-- O livro deve existir.
+- O usuário deve estar cadastrado no sistema.
+- O livro deve estar cadastrado no sistema.
 - O livro precisa possuir exemplares disponíveis.
 - Um empréstimo devolvido não pode ser devolvido novamente.
 - Ao realizar o empréstimo, a quantidade disponível diminui em uma unidade.
