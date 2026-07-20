@@ -1,6 +1,7 @@
 package com.giovanni.libraryapi.service;
 
 import com.giovanni.libraryapi.entity.Author;
+import com.giovanni.libraryapi.exception.AuthorNotFoundException;
 import com.giovanni.libraryapi.repository.AuthorRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @Service
-public class AuthorService {
+public class AuthorService{
 
     private final AuthorRepository repository;
 
@@ -27,9 +28,6 @@ public class AuthorService {
 
     public Author getAuthorById(Long id){
         return repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Autor não encontrado"
-                ));
+                .orElseThrow(() -> new AuthorNotFoundException("Autor não encontrado"));
     }
 }
