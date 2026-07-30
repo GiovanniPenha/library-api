@@ -1,6 +1,7 @@
 package com.giovanni.libraryapi.handler;
 
 import com.giovanni.libraryapi.exception.AuthorNotFoundException;
+import com.giovanni.libraryapi.exception.IsbnAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,6 +14,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handlerAuthorNotFound(AuthorNotFoundException ex){
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(IsbnAlreadyExistsException.class)
+    public ResponseEntity<String> handlerIsbnAlreadyExists(IsbnAlreadyExistsException ex){
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
                 .body(ex.getMessage());
     }
 
