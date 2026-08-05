@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
+@Table(name = "books")
 public class Book {
 
     @Id
@@ -56,5 +57,9 @@ public class Book {
 
     public Author getAuthor() {
         return author;
+    }
+
+    public void setAuthor(Author author){
+        this.author = author;
     }
 }
