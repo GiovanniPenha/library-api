@@ -9,6 +9,8 @@ import com.giovanni.libraryapi.repository.AuthorRepository;
 import com.giovanni.libraryapi.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BookService {
 
@@ -37,5 +39,35 @@ public class BookService {
         return bookRepository.findById(id)
             .orElseThrow(() ->
                     new BookNotFoundException("Livro não encontrado."));
+    }
+
+    public List<Book> findAll(){
+        return bookRepository.findAll();
+    }
+
+    public void deleteById(Long id){
+        Book book = findById(id);
+        bookRepository.delete(book);
+    }
+
+    public Book update(Long id, Book book){
+        Book existingBook = findById(id);
+
+        if(!existingBook.getIsbn().equals(book.getIsbn())){
+            if(bookRepository.existsByIsbn(book.getIsbn())){
+                throw new IsbnAlreadyExistsException("Já existe um livro cadastrado com o ISBN informado");
+            }
+        }
+
+        Author author = authorRepository.findById(book.getAuthor().getId())
+                .orElseThrow(() ->
+                        new AuthorNotFoundException("Autor não encontrado"));
+
+        existingBook.setTitle(book.getTitle());
+        existingBook.setIsbn(book.getIsbn());
+        existingBook.setGenre(book.getGenre());
+        existingBook.setAuthor(author);
+
+        return bookRepository.save(existingBook);
     }
 }

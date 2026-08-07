@@ -62,4 +62,16 @@ public class Book {
     public void setAuthor(Author author){
         this.author = author;
     }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
 }
