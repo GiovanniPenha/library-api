@@ -1,5 +1,6 @@
 package com.giovanni.libraryapi.service;
 
+import com.giovanni.libraryapi.dto.BookRequestDTO;
 import com.giovanni.libraryapi.entity.Author;
 import com.giovanni.libraryapi.entity.Book;
 import com.giovanni.libraryapi.exception.AuthorNotFoundException;
@@ -23,16 +24,21 @@ public class BookService {
         this.authorRepository = authorRepository;
     }
 
-    public Book saveBook(Book book){
+    public Book saveBook(BookRequestDTO book){
         if (bookRepository.existsByIsbn(book.getIsbn())){
             throw new IsbnAlreadyExistsException("Já existe um livro cadastrado com o ISBN informado");
         }
 
-        Author author = authorRepository.findById(book.getAuthor().getId())
+        Author author = authorRepository.findById(book.getAuthorId())
                 .orElseThrow(() -> new AuthorNotFoundException("Autor com ID informado não foi encontrado."));
 
-        book.setAuthor(author);
-        return bookRepository.save(book);
+        Book newBook = new Book(
+                book.getTitle(),
+                book.getIsbn(),
+                book.getGenre(),
+                author
+        );
+        return bookRepository.save(newBook);
     }
 
     public Book findById(Long id) {
@@ -50,7 +56,7 @@ public class BookService {
         bookRepository.delete(book);
     }
 
-    public Book update(Long id, Book book){
+    public Book update(Long id, BookRequestDTO book){
         Book existingBook = findById(id);
 
         if(!existingBook.getIsbn().equals(book.getIsbn())){
@@ -59,7 +65,7 @@ public class BookService {
             }
         }
 
-        Author author = authorRepository.findById(book.getAuthor().getId())
+        Author author = authorRepository.findById(book.getAuthorId())
                 .orElseThrow(() ->
                         new AuthorNotFoundException("Autor não encontrado"));
 

@@ -1,5 +1,7 @@
 package com.giovanni.libraryapi.controller;
 
+import com.giovanni.libraryapi.dto.BookRequestDTO;
+import com.giovanni.libraryapi.dto.BookResponseDTO;
 import com.giovanni.libraryapi.entity.Book;
 import com.giovanni.libraryapi.service.BookService;
 import org.springframework.http.HttpStatus;
@@ -19,29 +21,33 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<Book> saveBook(@RequestBody Book book){
+    public ResponseEntity<BookResponseDTO> saveBook(@RequestBody BookRequestDTO book){
 
         Book savedBook = bookService.saveBook(book);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(savedBook);
+                .body(BookResponseDTO.fromEntity(savedBook));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> findById(@PathVariable Long id){
+    public ResponseEntity<BookResponseDTO> findById(@PathVariable Long id){
 
         Book book = bookService.findById(id);
 
-        return ResponseEntity.ok(book);
+        return ResponseEntity.ok(BookResponseDTO.fromEntity(book));
     }
 
     @GetMapping
-    public ResponseEntity<List<Book>> findAll(){
+    public ResponseEntity<List<BookResponseDTO>> findAll(){
 
         List<Book> books = bookService.findAll();
 
-        return ResponseEntity.ok(books);
+        List<BookResponseDTO> response = books.stream()
+                .map(BookResponseDTO::fromEntity)
+                .toList();
+
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
@@ -53,10 +59,10 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Book> update(@PathVariable Long id, @RequestBody Book book){
+    public ResponseEntity<BookResponseDTO> update(@PathVariable Long id, @RequestBody BookRequestDTO book){
 
         Book updateBook = bookService.update(id, book);
 
-        return ResponseEntity.ok(updateBook);
+        return ResponseEntity.ok(BookResponseDTO.fromEntity(updateBook));
     }
 }
