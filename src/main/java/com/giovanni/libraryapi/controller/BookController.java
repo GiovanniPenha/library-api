@@ -4,6 +4,7 @@ import com.giovanni.libraryapi.dto.BookRequestDTO;
 import com.giovanni.libraryapi.dto.BookResponseDTO;
 import com.giovanni.libraryapi.entity.Book;
 import com.giovanni.libraryapi.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<BookResponseDTO> saveBook(@RequestBody BookRequestDTO book){
+    public ResponseEntity<BookResponseDTO> saveBook(@RequestBody @Valid BookRequestDTO book){
 
         Book savedBook = bookService.saveBook(book);
 
@@ -59,7 +60,7 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BookResponseDTO> update(@PathVariable Long id, @RequestBody BookRequestDTO book){
+    public ResponseEntity<BookResponseDTO> update(@PathVariable Long id, @RequestBody @Valid BookRequestDTO book){
 
         Book updateBook = bookService.update(id, book);
 
