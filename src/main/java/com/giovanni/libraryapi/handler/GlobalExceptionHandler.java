@@ -1,5 +1,6 @@
 package com.giovanni.libraryapi.handler;
 
+import com.giovanni.libraryapi.dto.ErrorResponseDTO;
 import com.giovanni.libraryapi.exception.AuthorNotFoundException;
 import com.giovanni.libraryapi.exception.BookNotFoundException;
 import com.giovanni.libraryapi.exception.IsbnAlreadyExistsException;
@@ -13,31 +14,43 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthorNotFoundException.class)
-    public ResponseEntity<String> handlerAuthorNotFound(AuthorNotFoundException ex){
+    public ResponseEntity<ErrorResponseDTO> handlerAuthorNotFound(AuthorNotFoundException ex){
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(ex.getMessage());
+                .body(new ErrorResponseDTO(
+                        HttpStatus.NOT_FOUND.value(),
+                        ex.getMessage()
+                ));
     }
 
     @ExceptionHandler(IsbnAlreadyExistsException.class)
-    public ResponseEntity<String> handlerIsbnAlreadyExists(IsbnAlreadyExistsException ex){
+    public ResponseEntity<ErrorResponseDTO> handlerIsbnAlreadyExists(IsbnAlreadyExistsException ex){
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
-                .body(ex.getMessage());
+                .body(new ErrorResponseDTO(
+                        HttpStatus.CONFLICT.value(),
+                        ex.getMessage()
+                ));
     }
 
     @ExceptionHandler(BookNotFoundException.class)
-    public ResponseEntity<String> handleBookNotFoundException(BookNotFoundException ex){
+    public ResponseEntity<ErrorResponseDTO> handleBookNotFoundException(BookNotFoundException ex){
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(ex.getMessage());
+                .body(new ErrorResponseDTO(
+                        HttpStatus.NOT_FOUND.value(),
+                        ex.getMessage()
+                ));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex){
+    public ResponseEntity<ErrorResponseDTO> handleValidationException(MethodArgumentNotValidException ex){
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ex.getBindingResult().getFieldError().getDefaultMessage());
+                .body(new ErrorResponseDTO(
+                        HttpStatus.BAD_REQUEST.value(),
+                        ex.getBindingResult().getFieldError().getDefaultMessage()
+                ));
     }
 
 }
