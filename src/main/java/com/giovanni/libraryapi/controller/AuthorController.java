@@ -2,6 +2,7 @@ package com.giovanni.libraryapi.controller;
 
 import com.giovanni.libraryapi.entity.Author;
 import com.giovanni.libraryapi.service.AuthorService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class AuthorController {
     }
 
     @PostMapping
-    public Author save(@RequestBody Author author){
+    public Author save(@Valid @RequestBody Author author){
         return service.saveAuthor(author);
     }
 
