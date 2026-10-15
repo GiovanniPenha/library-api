@@ -57,11 +57,12 @@ public class AuthorServiceTest {
     void deveLancarExcecaoQuandoAuthorNaoExiste(){
         when(repository.findById(999L)).thenReturn(Optional.empty());
 
-        assertThrows(
+        AuthorNotFoundException exception = assertThrows(
                 AuthorNotFoundException.class,
                 () -> service.getAuthorById(999L)
         );
 
+        assertEquals("Autor não encontrado", exception.getMessage());
         verify(repository).findById(999L);
     }
 }
