@@ -84,4 +84,17 @@ public class AuthorControllerHttpTest {
                 .andExpect(jsonPath("$[0].name").value("Machado de Assis"));
     }
 
+
+    @Test
+    void deveRetornar200AoBuscarAutorPorId() throws Exception {
+        Author author = new Author();
+        author.setName("Machado de Assis");
+
+        when(service.getAuthorById(1L)).thenReturn(author);
+
+        mockMvc.perform(get("/authors/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Machado de Assis"));
+    }
+
 }
