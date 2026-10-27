@@ -5,6 +5,7 @@ import com.giovanni.libraryapi.entity.Author;
 import com.giovanni.libraryapi.entity.Book;
 import com.giovanni.libraryapi.entity.Genre;
 import com.giovanni.libraryapi.exception.BookNotFoundException;
+import com.giovanni.libraryapi.exception.IsbnAlreadyExistsException;
 import com.giovanni.libraryapi.service.BookService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,7 +131,8 @@ public class BookControllerHttpTest {
                                 "authorId": 1
                             }
                             """))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400));
 
         verifyNoInteractions(bookService);
     }
@@ -162,5 +164,48 @@ public class BookControllerHttpTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("Dom Casmurro - Edição Revisada"))
                 .andExpect(jsonPath("$.authorName").value("Machado de Assis"));
+    }
+
+    @Test
+    void deveRetornar404AoAtualizarLivroInexistente() throws Exception {
+        when(bookService.update(any(Long.class), any(BookRequestDTO.class)))
+                .thenThrow(new BookNotFoundException("Livro não encontrado."));
+
+        mockMvc.perform(put("/books/999")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "title": "Dom Casmurro",
+                                "isbn": "9781234567890",
+                                "genre": "ROMANCE",
+                                "authorId": 1
+                            }
+                            """))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value(404))
+                .andExpect(jsonPath("$.message").value("Livro não encontrado."));
+    }
+
+    @Test
+    void deveRetornar409AoCadastrarLivroComIsbnDuplicado() throws Exception {
+        when(bookService.saveBook(any(BookRequestDTO.class)))
+                .thenThrow(new IsbnAlreadyExistsException(
+                        "Já existe um livro cadastrado com o ISBN informado"
+                ));
+
+        mockMvc.perform(post("/books")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "title": "Dom Casmurro",
+                                "isbn": "9781234567890",
+                                "genre": "ROMANCE",
+                                "authorId": 1
+                            }
+                            """))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.status").value(409))
+                .andExpect(jsonPath("$.message")
+                        .value("Já existe um livro cadastrado com o ISBN informado"));
     }
 }
