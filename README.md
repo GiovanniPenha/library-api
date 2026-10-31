@@ -21,6 +21,32 @@ Este projeto faz parte do meu portfólio de desenvolvimento backend e tem como o
 
 ---
 
+## 📋 Funcionalidades
+
+### Autores
+
+- Cadastro de autores
+- Consulta de autores por ID
+- Listagem de autores
+
+### Livros
+
+- Cadastro de livros
+- Consulta de livros por ID
+- Listagem de livros
+- Atualização de livros
+- Exclusão de livros
+- Associação de livros a autores
+
+### Outras funcionalidades
+
+- Validação dos dados recebidos pela API
+- Tratamento padronizado de exceções
+- Verificação de ISBN duplicado
+- Testes automatizados unitários e HTTP
+
+---
+
 ## ⚙️ Como executar o projeto
 
 ### Pré-requisitos

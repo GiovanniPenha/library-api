@@ -84,6 +84,4 @@ public class AuthorServiceTest {
         assertEquals("Machado de Assis", result.get(0).getName());
         assertEquals("Clarice Lispector", result.get(1).getName());
     }
-
-
 }
