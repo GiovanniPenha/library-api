@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -65,4 +66,24 @@ public class AuthorServiceTest {
         assertEquals("Autor não encontrado", exception.getMessage());
         verify(repository).findById(999L);
     }
+
+    @Test
+    void deveListarTodosOsAutores() {
+        Author author1 = new Author();
+        author1.setName("Machado de Assis");
+
+        Author author2 = new Author();
+        author2.setName("Clarice Lispector");
+
+        when(repository.findAll())
+                .thenReturn(List.of(author1, author2));
+
+        List<Author> result = service.getAllAuthors();
+
+        assertEquals(2, result.size());
+        assertEquals("Machado de Assis", result.get(0).getName());
+        assertEquals("Clarice Lispector", result.get(1).getName());
+    }
+
+
 }
