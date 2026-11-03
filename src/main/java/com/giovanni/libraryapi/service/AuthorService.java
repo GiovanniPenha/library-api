@@ -5,7 +5,7 @@ import com.giovanni.libraryapi.exception.AuthorNotFoundException;
 import com.giovanni.libraryapi.repository.AuthorRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.List;
 
@@ -29,5 +29,13 @@ public class AuthorService{
     public Author getAuthorById(Long id){
         return repository.findById(id)
                 .orElseThrow(() -> new AuthorNotFoundException("Autor não encontrado"));
+    }
+
+    public Author updateAuthor(Long id, Author author) {
+        Author existingAuthor = getAuthorById(id);
+
+        existingAuthor.setName(author.getName());
+
+        return repository.save(existingAuthor);
     }
 }

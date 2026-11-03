@@ -137,10 +137,6 @@ Pela interface, é possível consultar os endpoints disponíveis, visualizar os 
 - [x] CRUD de livros
 - [x] Validação de dados e tratamento de exceções
 - [x] Testes automatizados da camada de serviço
-- [ ] CRUD de usuários
-- [ ] Sistema de empréstimos e devoluções
-- [ ] Docker
-- [ ] Deploy
 
 ---
 
